@@ -30,7 +30,7 @@ class ConnectionManager:
                     if result.isError():
                         states.append(False)
                     else:
-                        states.append(True)
+                        states.append(result.bits[0])
                 except Exception as e:
                     print(f"Error reading sensor {sensor['name']}: {e}")
                     states.append(False)

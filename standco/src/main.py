@@ -1,7 +1,5 @@
-from PyQt6 import QtWidgets
-import sys
-from stand_gui import Stand_Gui
 from connection_manager import ConnectionManager
+from sensor_manager import SensorManager
 
 if __name__ == '__main__':
     # app = QtWidgets.QApplication(sys.argv)
@@ -9,5 +7,11 @@ if __name__ == '__main__':
     # win.show()
     # app.exec()
     connection_manager = ConnectionManager()
-    connection_manager.read_sensors()
-    a = 123;
+    connection_manager.connect_to_sensors()
+    sensor_manager = SensorManager(connection_manager.clients)
+
+    while True:
+        sensor_manager.read_discrete_inputs()
+        result = sensor_manager.get_sensors_states()
+        print(result)
+    a = 123

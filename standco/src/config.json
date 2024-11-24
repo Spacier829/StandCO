@@ -3,43 +3,118 @@
     {
       "ip": "127.0.0.1",
       "port": 502,
+      "slave": 1,
       "sensors": [
-        {"name": "РД_1", "address": 0},
-        {"name": "РД_1.1", "address": 1},
-        {"name": "РД_1.2", "address": 2},
-        {"name": "РД_1.3", "address": 3},
-        {"name": "РД_2", "address": 4},
-        {"name": "РД_2.1", "address": 5},
-        {"name": "РД_2.2", "address": 6},
-        {"name": "РД_2.3", "address": 7}
+        {
+          "name": "РД_1",
+          "address": 0
+        },
+        {
+          "name": "РД_1.1",
+          "address": 1
+        },
+        {
+          "name": "РД_1.2",
+          "address": 2
+        },
+        {
+          "name": "РД_1.3",
+          "address": 3
+        },
+        {
+          "name": "РД_2",
+          "address": 4
+        },
+        {
+          "name": "РД_2.1",
+          "address": 5
+        },
+        {
+          "name": "РД_2.2",
+          "address": 6
+        },
+        {
+          "name": "РД_2.3",
+          "address": 7
+        }
       ]
     },
     {
       "ip": "127.0.0.1",
       "port": 503,
+      "slave": 1,
       "sensors": [
-        {"name": "РД_3", "address": 0},
-        {"name": "РД_3.1", "address": 1},
-        {"name": "РД_3.3", "address": 2},
-        {"name": "РД_3.2", "address": 3},
-        {"name": "РД_4", "address": 4},
-        {"name": "РД_4.1", "address": 5},
-        {"name": "РД_5.3", "address": 6},
-        {"name": "РД_4.2", "address": 7}
+        {
+          "name": "РД_3",
+          "address": 0
+        },
+        {
+          "name": "РД_3.1",
+          "address": 1
+        },
+        {
+          "name": "РД_3.3",
+          "address": 2
+        },
+        {
+          "name": "РД_3.2",
+          "address": 3
+        },
+        {
+          "name": "РД_4",
+          "address": 4
+        },
+        {
+          "name": "РД_4.1",
+          "address": 5
+        },
+        {
+          "name": "РД_5.3",
+          "address": 6
+        },
+        {
+          "name": "РД_4.2",
+          "address": 7
+        }
       ]
     },
     {
       "ip": "127.0.0.1",
       "port": 504,
+      "slave": 1,
       "sensors": [
-        {"name": "РД_5", "address": 0},
-        {"name": "РД_5.1", "address": 1},
-        {"name": "РД_4.3", "address": 2},
-        {"name": "РД_5.2", "address": 3},
-        {"name": "РД_6", "address": 4},
-        {"name": "РД_6.1", "address": 5},
-        {"name": "РД_6.3", "address": 6},
-        {"name": "РД_6.2", "address": 7}
+        {
+          "name": "РД_5",
+          "address": 0
+        },
+        {
+          "name": "РД_5.1",
+          "address": 1
+        },
+        {
+          "name": "РД_4.3",
+          "address": 2
+        },
+        {
+          "name": "РД_5.2",
+          "address": 3
+        },
+        {
+          "name": "РД_6",
+          "address": 4
+        },
+        {
+          "name": "РД_6.1",
+          "address": 5
+        },
+        {
+          "name": "РД_6.3",
+          "address": 6
+        },
+        {
+          "name": "РД_6.2",
+          "address": 7
+        }
       ]
     }
   ]

@@ -2,10 +2,6 @@ from connection_manager import ConnectionManager
 from sensor_manager import SensorManager
 
 if __name__ == '__main__':
-    # app = QtWidgets.QApplication(sys.argv)
-    # win = Stand_Gui()
-    # win.show()
-    # app.exec()
     connection_manager = ConnectionManager()
     connection_manager.connect_to_sensors()
     sensor_manager = SensorManager(connection_manager.clients)

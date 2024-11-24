@@ -1,10 +1,11 @@
 from connection_manager import ConnectionManager
-from sensor_manager import SensorManager
+from relay_manager import RelayManager
 
 if __name__ == '__main__':
-    connection_manager = ConnectionManager()
+    config_pressure_relay = "../configs/config_pressure_relay.json"
+    connection_manager = ConnectionManager(config_pressure_relay)
     connection_manager.connect_to_sensors()
-    sensor_manager = SensorManager(connection_manager.clients)
+    sensor_manager = RelayManager(connection_manager.clients)
 
     while True:
         sensor_manager.read_discrete_inputs()

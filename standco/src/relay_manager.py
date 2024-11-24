@@ -1,29 +1,31 @@
 import time
 
 
-class SensorManager:
+class RelayManager:
 
     def __init__(self, clients):
-        self.sensors_states = []
+        self.relay_states = []
         self.clients = clients
         for client in clients:
-            for sensor in client["sensors"]:
-                self.sensors_states.append({
-                    "name": sensor["name"],
-                    "address": sensor["address"],
+            for relay in client["sensors"]:
+                self.relay_states.append({
+                    "name": relay["name"],
+                    "address": relay["address"],
                     "state": None})
 
     def read_discrete_inputs(self):
         read_bytes_count = 8
         start_time = time.time()
         for client_data in self.clients:
+            # Здесь нужно установить счетчик, который будет помогать ставить состояние по адресу
             client = client_data["client"]
             slave_id = client_data["slave"]
             try:
                 result = client.read_discrete_inputs(0, read_bytes_count, slave_id)
                 if result and not result.isError():
                     for i in range(len(result.bits)):
-                        for s in self.sensors_states:
+                        for s in self.relay_states:
+                            # Здесь нужно добавить проверку индекса либо адреса для установки всех значений состояний
                             state = result.bits[i]
                             if s["address"] == i:
                                 s["state"] = state
@@ -36,5 +38,5 @@ class SensorManager:
         elapsed_time = end_time - start_time
         a = 123
 
-    def get_sensors_states(self):
+    def get_relay_states(self):
         return self.sensors_states

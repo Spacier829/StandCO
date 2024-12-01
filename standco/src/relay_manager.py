@@ -1,6 +1,3 @@
-import time
-
-
 class RelayManager:
 
     def __init__(self, clients):
@@ -11,32 +8,27 @@ class RelayManager:
                 self.relay_states.append({
                     "name": relay["name"],
                     "address": relay["address"],
-                    "state": None})
+                    "state": False})
 
     def read_discrete_inputs(self):
-        read_bytes_count = 8
-        start_time = time.time()
+        read_byte_count = 1
         for client_data in self.clients:
-            # Здесь нужно установить счетчик, который будет помогать ставить состояние по адресу
             client = client_data["client"]
             slave_id = client_data["slave"]
-            try:
-                result = client.read_discrete_inputs(0, read_bytes_count, slave_id)
-                if result and not result.isError():
-                    for i in range(len(result.bits)):
+            for relay in client_data["sensors"]:
+                try:
+                    address = relay["address"]
+                    result = client.read_discrete_inputs(address, read_byte_count, slave=slave_id)
+                    if result and not result.isError():
+                        state = bool(result.bits[0])
                         for s in self.relay_states:
-                            # Здесь нужно добавить проверку индекса либо адреса для установки всех значений состояний
-                            state = result.bits[i]
-                            if s["address"] == i:
+                            if s["name"] == relay["name"]:
                                 s["state"] = state
                                 break
-                else:
-                    print(f"Ошибка чтения")
-            except Exception as e:
-                print(f"Ошибка при опросе {e}")
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        a = 123
+                    else:
+                        print(f"Ошибка чтения")
+                except Exception as e:
+                    print(f"Ошибка при опросе {e}")
 
     def get_relay_states(self):
-        return self.sensors_states
+        return self.relay_states

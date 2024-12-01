@@ -10,7 +10,7 @@ class RelayManager:
                     "address": relay["address"],
                     "state": False})
 
-    def read_discrete_inputs(self):
+    def read_states(self):
         read_byte_count = 1
         for client_data in self.clients:
             client = client_data["client"]

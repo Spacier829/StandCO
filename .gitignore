@@ -22,6 +22,8 @@ var/
 wheels/
 share/python-wheels/
 *.egg-info/
+/standco/configs/config_pressure_relay_test.json
+/standco/configs/config_pressure_sensor_test.json
 .installed.cfg
 *.egg
 MANIFEST

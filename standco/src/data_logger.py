@@ -29,30 +29,3 @@ class DataLogger:
         with open(self.file_name, mode="a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(row)
-
-
-
-logger = SensorLogger()
-
-while True:
-    # Считываем данные с реле и датчиков
-    relays_manager.read_states()
-    result_relays = relays_manager.get_relay_states()
-
-    sensors_manager.read_values()
-    result_sensors = sensors_manager.get_sensor_values()
-
-    # Инициализируем файл с заголовками (один раз)
-    if not logger.file_initialized:
-        logger.initialize_file(result_relays, result_sensors)
-
-    # Логируем данные
-    logger.log_data(result_relays, result_sensors)
-
-    # Печать данных (для проверки)
-    for relay in result_relays:
-        print(f"{relay['name']}: {relay['state']}")
-    for sensor in result_sensors:
-        print(f"{sensor['name']}: Pressure={sensor['pressure']}, Temperature={sensor['temperature']}")
-
-    sleep(1)

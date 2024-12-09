@@ -1,37 +1,58 @@
-from tabulate import tabulate
+import csv
 from datetime import datetime
 
 
 class DataLogger:
-    def __init__(self, relay_states, sensor_values):
-        self.start_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        self.file_path = f"data_log_{self.start_time}.txt"
-        self.relay_states = relay_states  # Данные реле
-        self.sensor_values = sensor_values  # Данные датчиков
+    def __init__(self):
+        self.file_name = f"sensor_log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+        self.file_initialized = False
+
+    def initialize_file(self, relay_states, sensor_values):
+        if not self.file_initialized:
+            relay_headers = [relay["name"] for relay in relay_states]
+            sensor_headers = [f"{sensor['name']} (P)" for sensor in sensor_values] + \
+                             [f"{sensor['name']} (T)" for sensor in sensor_values]
+            headers = ["Time"] + relay_headers + sensor_headers
+
+            with open(self.file_name, mode="w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow(headers)
+            self.file_initialized = True
 
     def log_data(self, relay_states, sensor_values):
-        # Заголовки таблицы
-        relay_headers = [relay["name"] for relay in relay_states]
-        sensor_headers = [f"{sensor['name']} (P)" for sensor in sensor_values] + \
-                         [f"{sensor['name']} (T)" for sensor in sensor_values]
-        self.headers = ["Time"] + relay_headers + sensor_headers
-
-        # Значения для записи
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         relay_values = [int(relay["state"]) for relay in relay_states]
-        sensor_values = [sensor["pressure"] for sensor in sensor_values] + \
-                        [sensor["temperature"] for sensor in sensor_values]
-        self.row = [timestamp] + relay_values + sensor_values
+        sensor_values_flat = [sensor["pressure"] for sensor in sensor_values] + \
+                             [sensor["temperature"] for sensor in sensor_values]
+        row = [timestamp] + relay_values + sensor_values_flat
 
-    def initialize_table(self):
-        # Форматирование таблицы
-        return tabulate([self.row], headers=self.headers, tablefmt="grid")
+        with open(self.file_name, mode="a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(row)
 
-    def update_table(self):
-        return tabulate([self.row], tablefmt="grid")
 
-    def write_to_log(self, table_data):
-        # Сохранение в файл
-        with open(self.file_path, "a") as file:
-            file.write(table_data + "\n\n")  # Разделяем записи пустой строкой
-        print("Данные записаны в файл.")
+
+logger = SensorLogger()
+
+while True:
+    # Считываем данные с реле и датчиков
+    relays_manager.read_states()
+    result_relays = relays_manager.get_relay_states()
+
+    sensors_manager.read_values()
+    result_sensors = sensors_manager.get_sensor_values()
+
+    # Инициализируем файл с заголовками (один раз)
+    if not logger.file_initialized:
+        logger.initialize_file(result_relays, result_sensors)
+
+    # Логируем данные
+    logger.log_data(result_relays, result_sensors)
+
+    # Печать данных (для проверки)
+    for relay in result_relays:
+        print(f"{relay['name']}: {relay['state']}")
+    for sensor in result_sensors:
+        print(f"{sensor['name']}: Pressure={sensor['pressure']}, Temperature={sensor['temperature']}")
+
+    sleep(1)

@@ -1,3 +1,6 @@
+import struct
+
+
 class SensorManager:
 
     def __init__(self, clients):
@@ -10,11 +13,6 @@ class SensorManager:
                     "pressure": 0.0,
                     "temperature": 0.0})
 
-    def combine_to_float(self, high, low):
-        combined = (low << 16) | high
-        float_value = int.to_bytes(combined, length=4, byteorder='big', signed=False)
-        return float.fromhex(float_value.hex())
-
     def read_values(self):
         read_byte_count = 4
         for client_data in self.clients:
@@ -24,8 +22,8 @@ class SensorManager:
                 try:
                     result = client.read_input_registers(0, read_byte_count, slave=slave_id)
                     if result and not result.isError():
-                        pressure = self.combine_to_float(result.registers[0], result.registers[1])
-                        temperature = self.combine_to_float(result.registers[2], result.registers[3])
+                        pressure = struct.unpack(">f", struct.pack(">HH", result.registers[1], result.registers[0]))[0]
+                        temperature = struct.unpack(">f", struct.pack(">HH", result.registers[3], result.registers[2]))[0]
                         for s in self.sensor_values:
                             if s["name"] == sensor["name"]:
                                 s["pressure"] = pressure

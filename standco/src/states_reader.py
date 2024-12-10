@@ -48,7 +48,7 @@ class StatesReader:
                 for relay in result_relays:
                     print(f"{relay['name']}: {relay['state']}")
                 for sensor in result_sensors:
-                    print(f"{sensor['name']}: P={sensor['pressure']}, T={sensor['temperature']}")
+                    print(f"{sensor['name']}: P={sensor['pressure']:.4f}, T={sensor['temperature']:.4f}")
                 sleep(1)
             except Exception as e:
                 print(f"Ошибка:{e}")

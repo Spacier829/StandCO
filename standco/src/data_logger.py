@@ -22,8 +22,8 @@ class DataLogger:
     def log_data(self, relay_states, sensor_values):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         relay_values = [int(relay["state"]) for relay in relay_states]
-        sensor_values_flat = [sensor["pressure"] for sensor in sensor_values] + \
-                             [sensor["temperature"] for sensor in sensor_values]
+        sensor_values_flat = [f"{sensor['pressure']:.4f}" for sensor in sensor_values] + \
+                             [f"{sensor['temperature']:.4f}" for sensor in sensor_values]
         row = [timestamp] + relay_values + sensor_values_flat
 
         with open(self.file_name, mode="a", newline="") as file:

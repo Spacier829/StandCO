@@ -19,8 +19,8 @@ class SensorManager:
                 try:
                     result = client.read_input_registers(0, read_byte_count, slave=slave_id)
                     if result and not result.isError():
-                        pressure = float(result.registers[0])
-                        temperature = float(result.registers[1])
+                        pressure = result.registers[0]
+                        temperature = result.registers[1]
                         for s in self.sensor_values:
                             if s["name"] == sensor["name"]:
                                 s["pressure"] = pressure

@@ -22,6 +22,7 @@ class StatesReader:
         self.sensors_manager = SensorManager(self.connection_manager_sensors.clients)
 
         self.logger = DataLogger()
+
         self.is_running = True
 
         signal.signal(signal.SIGINT, self.signal_handler)

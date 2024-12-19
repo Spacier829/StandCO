@@ -11,24 +11,25 @@ class RelayManager:
                     "state": False})
 
     def read_states(self):
-        read_byte_count = 1
+        read_byte_count = 8
         for client_data in self.clients:
             client = client_data["client"]
             slave_id = client_data["slave"]
-            for relay in client_data["sensors"]:
-                try:
-                    address = relay["address"]
-                    result = client.read_discrete_inputs(address, read_byte_count, slave=slave_id)
-                    if result and not result.isError():
-                        state = bool(result.bits[0])
-                        for s in self.relay_states:
-                            if s["name"] == relay["name"]:
-                                s["state"] = state
-                                break
-                    else:
-                        print(f"Ошибка чтения")
-                except Exception as e:
-                    print(f"Ошибка при опросе {e}")
+            try:
+                results = client.read_discrete_inputs(0, read_byte_count, slave=slave_id)
+                if results and not results.isError():
+                    states = results.bits[:read_byte_count]
+                    for i, relay in enumerate(client_data["sensors"]):
+                        if i < len(states):
+                            state = bool(states[i])
+                            for s in self.relay_states:
+                                if s["name"] == relay["name"]:
+                                    s["state"] = state
+                                    break
+                else:
+                    print(f"Ошибка чтения")
+            except Exception as e:
+                print(f"Ошибка при опросе {e}")
 
     def get_relay_states(self):
         return self.relay_states

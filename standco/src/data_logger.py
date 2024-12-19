@@ -1,10 +1,13 @@
 import csv
+import os
 from datetime import datetime
 
 
 class DataLogger:
-    def __init__(self):
-        self.file_name = f"sensor_log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+    def __init__(self, log_dir="../logs"):
+        self.log_dir = log_dir
+        os.makedirs(self.log_dir, exist_ok=True)
+        self.file_name = os.path.join(self.log_dir, f"sensor_log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv")
         self.file_initialized = False
 
     def initialize_file(self, relay_states, sensor_values):

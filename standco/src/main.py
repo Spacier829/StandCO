@@ -1,4 +1,3 @@
-
 from states_reader import StatesReader
 
 if __name__ == '__main__':

@@ -24,7 +24,6 @@ class ConnectionManager:
                                  "slave": device["slave"],
                                  "sensors": device["sensors"],
                                  "status": is_connected})
-        a = 123
 
     def close(self):
         for client in self.clients:

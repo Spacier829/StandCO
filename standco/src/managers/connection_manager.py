@@ -23,7 +23,7 @@ class ConnectionManager:
             self.clients.append({"client": client,
                                  "slave": device["slave"],
                                  "sensors": device["sensors"],
-                                 "status": is_connected})
+                                 "is_connected": is_connected})
 
     def close(self):
         for client in self.clients:

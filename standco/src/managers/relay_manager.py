@@ -2,13 +2,15 @@ class RelayManager:
 
     def __init__(self, clients):
         self.relay_states = []
-        self.clients = clients
+        self.clients = []
         for client in clients:
-            for relay in client["sensors"]:
-                self.relay_states.append({
-                    "name": relay["name"],
-                    "address": relay["address"],
-                    "state": False})
+            if client["is_connected"]:
+                self.clients.append(client)
+                for relay in client["sensors"]:
+                    self.relay_states.append({
+                        "name": relay["name"],
+                        "address": relay["address"],
+                        "state": False})
 
     def read_states(self):
         read_byte_count = 8

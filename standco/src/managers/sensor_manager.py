@@ -5,13 +5,15 @@ class SensorManager:
 
     def __init__(self, clients):
         self.sensor_values = []
-        self.clients = clients
+        self.clients = []
         for client in clients:
-            for sensor in client["sensors"]:
-                self.sensor_values.append({
-                    "name": sensor["name"],
-                    "pressure": 0.0,
-                    "temperature": 0.0})
+            if client["is_connected"]:
+                self.clients.append(client)
+                for sensor in client["sensors"]:
+                    self.sensor_values.append({
+                        "name": sensor["name"],
+                        "pressure": 0.0,
+                        "temperature": 0.0})
 
     def read_values(self):
         read_byte_count = 4

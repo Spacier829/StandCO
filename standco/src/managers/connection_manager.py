@@ -14,13 +14,11 @@ class ConnectionManager:
     def connect_to_sensors(self):
         for device in self.config["devices"]:
             client = ModbusTcpClient(host=device["ip"], port=device["port"])
-            if client.connect():
-                print(f"Подключено к {device['ip']}:{device['port']}")
-                self.clients.append({"client": client,
-                                     "slave": device["slave"],
-                                     "sensors": device["sensors"]})
-            else:
-                print(f"Ошибка подключения к {device['ip']}:{device['port']}")
+            if not client.connect():
+                raise ConnectionError(f"Ошибка подключения к {device['ip']}:{device['port']}")
+            self.clients.append({"client": client,
+                                 "slave": device["slave"],
+                                 "sensors": device["sensors"]})
 
     def close(self):
         for client in self.clients:

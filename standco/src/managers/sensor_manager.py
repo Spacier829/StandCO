@@ -23,7 +23,8 @@ class SensorManager:
                     result = client.read_input_registers(0, read_byte_count, slave=slave_id)
                     if result and not result.isError():
                         pressure = struct.unpack(">f", struct.pack(">HH", result.registers[1], result.registers[0]))[0]
-                        temperature = struct.unpack(">f", struct.pack(">HH", result.registers[3], result.registers[2]))[0]
+                        temperature = struct.unpack(">f", struct.pack(">HH", result.registers[3], result.registers[2]))[
+                            0]
                         for s in self.sensor_values:
                             if s["name"] == sensor["name"]:
                                 s["pressure"] = pressure

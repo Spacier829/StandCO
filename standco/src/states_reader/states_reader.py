@@ -1,9 +1,9 @@
 import signal
 
-from connection_manager import ConnectionManager
-from relay_manager import RelayManager
-from sensor_manager import SensorManager
-from data_logger import DataLogger
+from standco.src.managers.connection_manager import ConnectionManager
+from standco.src.managers.relay_manager import RelayManager
+from standco.src.managers.sensor_manager import SensorManager
+from logger.data_logger import DataLogger
 from time import sleep
 
 
@@ -32,22 +32,25 @@ class StatesReader:
         self.is_running = False
 
     def read(self):
+        self.relays_manager.read_states()
+        result_relays = self.relays_manager.get_relay_states()
+
+        self.sensors_manager.read_values()
+        result_sensors = self.sensors_manager.get_sensor_values()
+        return result_relays, result_sensors
+
+    def print_states(self):
         while self.is_running:
             try:
-                self.relays_manager.read_states()
-                result_relays = self.relays_manager.get_relay_states()
-
-                self.sensors_manager.read_values()
-                result_sensors = self.sensors_manager.get_sensor_values()
-
+                relays_states, sensors_values = self.read()
                 if not self.logger.file_initialized:
-                    self.logger.initialize_file(result_relays, result_sensors)
+                    self.logger.initialize_file(relays_states, sensors_values)
 
-                self.logger.log_data(result_relays, result_sensors)
+                self.logger.log_data(relays_states, sensors_values)
 
-                for relay in result_relays:
+                for relay in relays_states:
                     print(f"{relay['name']}: {relay['state']}")
-                for sensor in result_sensors:
+                for sensor in sensors_values:
                     print(f"{sensor['name']}: P={sensor['pressure']:.4f}, T={sensor['temperature']:.4f}")
                 sleep(1)
             except Exception as e:

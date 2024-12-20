@@ -23,12 +23,15 @@ class DataLogger:
             self.file_initialized = True
 
     def log_data(self, relay_states, sensor_values):
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        relay_values = [int(relay["state"]) for relay in relay_states]
-        sensor_values_flat = [f"{sensor['pressure']:.4f}" for sensor in sensor_values] + \
-                             [f"{sensor['temperature']:.4f}" for sensor in sensor_values]
-        row = [timestamp] + relay_values + sensor_values_flat
+        if relay_states or sensor_values:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            relay_values = [int(relay["state"]) for relay in relay_states]
+            sensor_values_flat = [f"{sensor['pressure']:.4f}" for sensor in sensor_values] + \
+                                 [f"{sensor['temperature']:.4f}" for sensor in sensor_values]
+            row = [timestamp] + relay_values + sensor_values_flat
 
-        with open(self.file_name, mode="a", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(row)
+            with open(self.file_name, mode="a", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow(row)
+        else:
+            print("Нет данных")

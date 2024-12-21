@@ -13,6 +13,7 @@ class StatesReader:
         config_pressure_sensors = "../configs/config_pressure_sensors.json"
 
         self.connection_manager_relays = ConnectionManager(config_pressure_relays)
+
         self.connection_manager_sensors = ConnectionManager(config_pressure_sensors)
         self.connection_manager_relays.connect_to_sensors()
         self.connection_manager_sensors.connect_to_sensors()

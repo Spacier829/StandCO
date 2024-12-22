@@ -3,7 +3,7 @@ import signal
 from standco.src.managers.connection_manager import ConnectionManager
 from standco.src.managers.relay_manager import RelayManager
 from standco.src.managers.sensor_manager import SensorManager
-from logger.data_logger import DataLogger
+from loggers.data_logger import DataLogger
 from time import sleep
 
 

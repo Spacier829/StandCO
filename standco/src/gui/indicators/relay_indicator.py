@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QLabel
 from PyQt6.QtGui import QPainter, QBrush, QColor, QFontMetrics
 from PyQt6.QtCore import QSize, Qt
 
+
 class RelayIndicator(QLabel):
     def __init__(self, relay_name):
         super().__init__()

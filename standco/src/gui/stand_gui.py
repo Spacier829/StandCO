@@ -35,10 +35,11 @@ class StandGui(QtWidgets.QWidget):
         # content_layout = QtWidgets.QGridLayout()
         content_layout = QtWidgets.QVBoxLayout()
         content_layout.setSpacing(5)
-        content_layout.addLayout(self.first_line_setup())
-        content_layout.addLayout(self.second_line_setup())
-        content_layout.addLayout(self.third_line_setup())
-        content_layout.addLayout(self.fourth_line_setup())
+        content_layout.addLayout(self.setup_plot())
+        # content_layout.addLayout(self.first_line_setup())
+        # content_layout.addLayout(self.second_line_setup())
+        # content_layout.addLayout(self.third_line_setup())
+        # content_layout.addLayout(self.fourth_line_setup())
         # content_layout.addLayout(self.setup_sensors_plots("ДД1"))
         # content_layout.addLayout(self.setup_relay_indicators("RD"))
         # content_layout.addLayout(self.setup_sensors_plots("ДД2"))
@@ -51,6 +52,12 @@ class StandGui(QtWidgets.QWidget):
         main_layout.addLayout(content_layout)
 
         self.setLayout(main_layout)
+
+    def setup_plot(self):
+        plot_layout = QtWidgets.QHBoxLayout()
+        self.DD1_plot = GraphPlot("DD1")
+        plot_layout.addWidget(self.DD1_plot)
+        return plot_layout
 
     def first_line_setup(self):
         first_line = QtWidgets.QHBoxLayout()
@@ -89,8 +96,10 @@ class StandGui(QtWidgets.QWidget):
         self.DD2_1_plot = GraphPlot("DD2.1")
         second_line.addWidget(self.DD2_1_plot)
         self.RD4_1_indicator = RelayIndicator("RD4.1")
+        self.RD4_1_indicator.set_state(False)
         self.RD5_1_indicator = RelayIndicator("RD5.1")
         self.RD6_1_indicator = RelayIndicator("RD6.1")
+        self.RD6_1_indicator.set_state(True)
         second_line.addWidget(self.RD4_1_indicator)
         second_line.addWidget(self.RD5_1_indicator)
         second_line.addWidget(self.RD6_1_indicator)

@@ -10,7 +10,7 @@ class StandGui(QtWidgets.QWidget):
         super().__init__()
         self.setWindowTitle("StandCO")
         palette = self.palette()
-        palette.setColor(QtGui.QPalette.ColorRole.Window, QtGui.QColor("lightgray"))
+        palette.setColor(QtGui.QPalette.ColorRole.Window, QtGui.QColor("#2C3539"))
         self.setPalette(palette)
         self.setup_ui()
 
@@ -35,23 +35,36 @@ class StandGui(QtWidgets.QWidget):
         # content_layout = QtWidgets.QGridLayout()
         content_layout = QtWidgets.QVBoxLayout()
         content_layout.setSpacing(5)
-        content_layout.addLayout(self.setup_plot())
-        # content_layout.addLayout(self.first_line_setup())
-        # content_layout.addLayout(self.second_line_setup())
-        # content_layout.addLayout(self.third_line_setup())
-        # content_layout.addLayout(self.fourth_line_setup())
-        # content_layout.addLayout(self.setup_sensors_plots("ДД1"))
-        # content_layout.addLayout(self.setup_relay_indicators("RD"))
-        # content_layout.addLayout(self.setup_sensors_plots("ДД2"))
-        # content_layout.addLayout(self.setup_sensors_plots("ДД3"))
-        # content_layout.addLayout(self.setup_relay_indicators("РД1"), 1, 1)
-        # content_layout.addLayout(self.setup_relay_indicators("РД2"), 2, 1)
-        # content_layout.addLayout(self.setup_relay_indicators("РД"), 3, 1)
-        # content_layout.addLayout(self.setup_sensors_plots("ДД2"), 0, 2, 3, 1)
-        # content_layout.addLayout(self.setup_sensors_plots("ДД3"), 0, 4, 3, 1)
+        # content_layout.addLayout(self.setup_plot())
+        content_layout.addLayout(self.test_btn_panel())
+        content_layout.addLayout(self.first_line_setup())
+        content_layout.addLayout(self.second_line_setup())
+        content_layout.addLayout(self.third_line_setup())
+        content_layout.addLayout(self.fourth_line_setup())
+
         main_layout.addLayout(content_layout)
 
         self.setLayout(main_layout)
+
+    def test_btn_panel(self):
+        panel = QtWidgets.QHBoxLayout()
+        self.clear_plot_btn = QtWidgets.QPushButton("Clear")
+        self.update_plot_btn = QtWidgets.QPushButton("Update")
+        panel.addWidget(self.clear_plot_btn)
+        panel.addWidget(self.update_plot_btn)
+        self.clear_plot_btn.clicked.connect(self.on_clear_btn_clicked)
+        self.update_plot_btn.clicked.connect(self.on_update_clear_clicked)
+        return panel
+
+    def on_clear_btn_clicked(self):
+        self.DD1_plot.clear_graph()
+
+    def on_update_clear_clicked(self):
+        pressure_data = [15.1342, 15.124, 15.112, 15.6234, 19.1342, 20.1342, 6.1342, 7.1342, 12.1342, 15.1342]
+        temperature_data = [23.9, 12.9, 17.9, 23.9, 61.9, 23.9, 23.9, 23.9, 23.9, 23.9]
+        self.DD1_plot.update_data(pressure_values=pressure_data, temperature_values=temperature_data)
+        self.DD2_1_plot.update_data(pressure_values=pressure_data, temperature_values=temperature_data)
+        self.DD3_2_plot.update_data(pressure_values=pressure_data, temperature_values=temperature_data)
 
     def setup_plot(self):
         plot_layout = QtWidgets.QHBoxLayout()

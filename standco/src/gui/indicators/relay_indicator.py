@@ -21,14 +21,13 @@ class RelayIndicator(QLabel):
         # Определение размера текста
         font_metrics = QFontMetrics(painter.font())
         text_width = font_metrics.horizontalAdvance(self.relay_name)
-        text_height = font_metrics.height()
 
         # Расположение текста по центру
         text_x = (self.width() - text_width) // 2
         text_y = 15  # Немного сверху, чтобы текст не перекрывал круг
 
         # Рисуем текст (имя реле)
-        painter.setPen(QColor("black"))
+        painter.setPen(QColor("white"))
         painter.drawText(text_x, text_y, self.relay_name)  # Отображение имени реле в центре
 
         # Определение цвета для состояния реле

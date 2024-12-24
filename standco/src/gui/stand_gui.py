@@ -38,13 +38,14 @@ class StandGui(QtWidgets.QWidget):
 
         content_layout = QtWidgets.QVBoxLayout()
         content_layout.setSpacing(5)
-        content_layout.addLayout(self.setup_relays_indicators(["РД_1", "РД_2", "РД_3", "РД_1", "РД_1", "РД_1"]))
+
         # content_layout.addLayout(self.setup_plot())
-        content_layout.addLayout(self.test_btn_panel())
-        content_layout.addLayout(self.first_line_setup())
-        content_layout.addLayout(self.second_line_setup())
-        content_layout.addLayout(self.third_line_setup())
-        content_layout.addLayout(self.fourth_line_setup())
+        # content_layout.addLayout(self.test_btn_panel())
+        # content_layout.addLayout(self.first_line_setup())
+        # content_layout.addLayout(self.second_line_setup())
+        # content_layout.addLayout(self.third_line_setup())
+        # content_layout.addLayout(self.fourth_line_setup())
+        content_layout.addLayout(self.setup_line_layout())
 
         main_layout.addLayout(content_layout)
 
@@ -54,9 +55,35 @@ class StandGui(QtWidgets.QWidget):
         indicators_layout = QtWidgets.QHBoxLayout()
         for i in range(3):
             indicator = RelayIndicator(relays_labels[i])
-            setattr(self, f"RD_{i}", indicator)
+            var_name = self.translit_name(relays_labels[i])
+            setattr(self, var_name, indicator)
             indicators_layout.addWidget(indicator)
         return indicators_layout
+
+    def setup_plot(self, sensor_name):
+        plot_layout = QtWidgets.QHBoxLayout()
+        plot = GraphPlot(sensor_name)
+        var_name = self.translit_name(sensor_name)
+        setattr(self, var_name, plot)
+        plot_layout.addWidget(plot)
+        return plot_layout
+
+    def translit_name(self, name):
+        name = name.replace(".", "_").replace("Р", "R").replace("Д", "D")
+        return name
+
+    def setup_line_layout(self):
+        line_layout = QtWidgets.QHBoxLayout()
+        first_indicators_labels = ["РД_1", "РД_2", "РД_3", "РД_4", "РД_5", "РД_6"]
+        first_sensors_labels = ["ДД_1", "ДД_2", "ДД_3"]
+        line_layout.addLayout(self.setup_plot(first_sensors_labels[0]))
+        line_layout.addLayout(self.setup_relays_indicators(first_indicators_labels))
+        first_indicators_labels = first_indicators_labels[3:]
+        line_layout.addLayout(self.setup_plot(first_sensors_labels[1]))
+        line_layout.addLayout(self.setup_relays_indicators(first_indicators_labels))
+        line_layout.addLayout(self.setup_plot(first_sensors_labels[2]))
+        return line_layout
+
 
     def test_btn_panel(self):
         panel = QtWidgets.QHBoxLayout()
@@ -103,8 +130,6 @@ class StandGui(QtWidgets.QWidget):
         self.DD3_plot = GraphPlot("DD3")
         first_line.addWidget(self.DD3_plot)
         return first_line
-
-
 
     def second_line_setup(self):
         second_line = QtWidgets.QHBoxLayout()

@@ -6,7 +6,6 @@ from standco.src.gui.indicators.relay_indicator import RelayIndicator
 
 class StandGui(QtWidgets.QWidget):
     def __init__(self):
-        # super().__init__()
         super().__init__()
         self.setWindowTitle("StandCO")
         palette = self.palette()
@@ -15,7 +14,10 @@ class StandGui(QtWidgets.QWidget):
         self.setup_ui()
         self.p_data = 1
         self.t_data = -1
-
+        self.time_data = 0
+        self.timer = QtCore.QTimer()
+        self.timer.timeout.connect(self.on_update_clear_clicked)
+        # self.timer.start(1000)
         # layout = QtWidgets.QVBoxLayout(self)
         #
         # self.indicator1 = RelayIndicator("РД1")
@@ -34,9 +36,9 @@ class StandGui(QtWidgets.QWidget):
         main_layout = QtWidgets.QVBoxLayout()
         main_layout.setContentsMargins(5, 5, 5, 5)
 
-        # content_layout = QtWidgets.QGridLayout()
         content_layout = QtWidgets.QVBoxLayout()
         content_layout.setSpacing(5)
+        content_layout.addLayout(self.setup_relays_indicators(["РД_1", "РД_2", "РД_3", "РД_1", "РД_1", "РД_1"]))
         # content_layout.addLayout(self.setup_plot())
         content_layout.addLayout(self.test_btn_panel())
         content_layout.addLayout(self.first_line_setup())
@@ -47,6 +49,14 @@ class StandGui(QtWidgets.QWidget):
         main_layout.addLayout(content_layout)
 
         self.setLayout(main_layout)
+
+    def setup_relays_indicators(self, relays_labels):
+        indicators_layout = QtWidgets.QHBoxLayout()
+        for i in range(3):
+            indicator = RelayIndicator(relays_labels[i])
+            setattr(self, f"RD_{i}", indicator)
+            indicators_layout.addWidget(indicator)
+        return indicators_layout
 
     def test_btn_panel(self):
         panel = QtWidgets.QHBoxLayout()
@@ -62,20 +72,14 @@ class StandGui(QtWidgets.QWidget):
         self.DD1_plot.clear_graph()
 
     def on_update_clear_clicked(self):
-        # pressure_data = [15.1342, 15.124, 15.112, 15.6234, 19.1342, 20.1342, 6.1342, 7.1342, 12.1342, 15.1342]
-        # temperature_data = [23.9, 12.9, 17.9, 23.9, 61.9, 23.9, 23.9, 23.9, 23.9, 23.9]
-
-        self.DD1_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data, time_value=0)
-        self.DD2_1_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data, time_value=0)
-        self.DD3_2_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data, time_value=0)
+        self.DD1_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data, time_value=self.time_data)
+        self.DD2_1_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data,
+                                    time_value=self.time_data)
+        self.DD3_2_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data,
+                                    time_value=self.time_data)
         self.p_data += 1
         self.t_data -= 1
-
-    def setup_plot(self):
-        plot_layout = QtWidgets.QHBoxLayout()
-        self.DD1_plot = GraphPlot("DD1")
-        plot_layout.addWidget(self.DD1_plot)
-        return plot_layout
+        self.time_data += 12
 
     def first_line_setup(self):
         first_line = QtWidgets.QHBoxLayout()
@@ -99,6 +103,8 @@ class StandGui(QtWidgets.QWidget):
         self.DD3_plot = GraphPlot("DD3")
         first_line.addWidget(self.DD3_plot)
         return first_line
+
+
 
     def second_line_setup(self):
         second_line = QtWidgets.QHBoxLayout()
@@ -170,30 +176,3 @@ class StandGui(QtWidgets.QWidget):
         self.DD3_3_plot = GraphPlot("DD3.3")
         fourth_line.addWidget(self.DD3_3_plot)
         return fourth_line
-
-    def setup_sensors_plots(self, sensor_title):
-        plots_layout = QtWidgets.QVBoxLayout()
-        plots_layout.setSpacing(5)
-        setattr(self, f"{sensor_title}_plot", GraphPlot(sensor_title))
-        plots_layout.addWidget(getattr(self, f"{sensor_title}_plot"))
-        for i in range(1, 4):  # Создание графиков для .1, .2, .3
-            plot_name = f"{sensor_title}_{i}_plot"
-            setattr(self, plot_name, GraphPlot(f"{sensor_title}.{i}"))
-            plots_layout.addWidget(getattr(self, plot_name))
-        return plots_layout
-
-    def setup_relay_indicators(self, relay_title):
-        vertical_layout = QtWidgets.QVBoxLayout()
-        vertical_layout.setSpacing(5)
-
-        for i in range(1, 5):  # Для 4 строк
-            horizontal_layout = QtWidgets.QHBoxLayout()
-            horizontal_layout.setSpacing(0)
-            for j in range(1, 4):  # Для 3 индикаторов в строке
-                relay_name = f"{relay_title}{j if i == 1 else f'{i}.{j}'}"
-                indicator_name = f"{relay_name}_indicator"
-                setattr(self, indicator_name, RelayIndicator(relay_name))
-                horizontal_layout.addWidget(getattr(self, indicator_name))
-            vertical_layout.addLayout(horizontal_layout)
-
-        return vertical_layout

@@ -28,12 +28,12 @@ class GraphPlot(pg.PlotWidget):
 
         self.update_views()
 
-        # Данные для графиков
-        self.time_data = np.linspace(-10, 0, 10)
-        self.pressure_data = np.zeros(10)
-        self.temperature_data = np.zeros(10)
+        self.time_data = []
+        self.pressure_data = []
+        self.temperature_data = []
+        self.ptr = 0
+        self.values_init_counter = 0
 
-        # Синхронизация правого вида с основным
         self.getPlotItem().vb.sigResized.connect(self.update_views)
         self.temperature_axis.sigRangeChangedManually.connect(self.rise_auto_button)
         self.getPlotItem().autoBtn.clicked.connect(self.auto_button_signal)
@@ -49,18 +49,25 @@ class GraphPlot(pg.PlotWidget):
     def auto_button_signal(self):
         self.temperature_axis.enableAutoRange()
 
-    def update_data(self, pressure_values, temperature_values):
-        self.pressure_data = np.roll(self.pressure_data, -len(pressure_values))
-        self.pressure_data[-len(pressure_values):] = pressure_values
-        self.pressure_curve.setData(self.time_data, self.pressure_data)
+    def update_data(self, pressure_value, temperature_value, time_value):
+        if self.values_init_counter < 10:
+            self.pressure_data.append(pressure_value)
+            self.temperature_data.append(temperature_value)
+            self.values_init_counter += 1
+        else:
+            self.pressure_data[:-1] = self.pressure_data[1:]
+            self.pressure_data[-1] = pressure_value
+            self.temperature_data[:-1] = self.temperature_data[1:]
+            self.temperature_data[-1] = temperature_value
+            self.ptr += 1
 
-        self.temperature_data = np.roll(self.temperature_data, -len(temperature_values))
-        self.temperature_data[-len(temperature_values):] = temperature_values
-        self.temperature_curve.setData(self.time_data, self.temperature_data)
+        self.pressure_curve.setData(self.pressure_data)
+        self.temperature_curve.setData(self.temperature_data)
+        self.pressure_curve.setPos(self.ptr, 0)
+        self.temperature_curve.setPos(self.ptr, 0)
 
     def clear_graph(self):
-        """Очистить графики."""
-        self.pressure_data.fill(0)
-        self.temperature_data.fill(0)
+        self.pressure_data = []
+        self.temperature_data = []
         self.pressure_curve.clear()
         self.temperature_curve.clear()

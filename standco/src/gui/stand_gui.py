@@ -13,6 +13,8 @@ class StandGui(QtWidgets.QWidget):
         palette.setColor(QtGui.QPalette.ColorRole.Window, QtGui.QColor("#2C3539"))
         self.setPalette(palette)
         self.setup_ui()
+        self.p_data = 1
+        self.t_data = -1
 
         # layout = QtWidgets.QVBoxLayout(self)
         #
@@ -60,11 +62,14 @@ class StandGui(QtWidgets.QWidget):
         self.DD1_plot.clear_graph()
 
     def on_update_clear_clicked(self):
-        pressure_data = [15.1342, 15.124, 15.112, 15.6234, 19.1342, 20.1342, 6.1342, 7.1342, 12.1342, 15.1342]
-        temperature_data = [23.9, 12.9, 17.9, 23.9, 61.9, 23.9, 23.9, 23.9, 23.9, 23.9]
-        self.DD1_plot.update_data(pressure_values=pressure_data, temperature_values=temperature_data)
-        self.DD2_1_plot.update_data(pressure_values=pressure_data, temperature_values=temperature_data)
-        self.DD3_2_plot.update_data(pressure_values=pressure_data, temperature_values=temperature_data)
+        # pressure_data = [15.1342, 15.124, 15.112, 15.6234, 19.1342, 20.1342, 6.1342, 7.1342, 12.1342, 15.1342]
+        # temperature_data = [23.9, 12.9, 17.9, 23.9, 61.9, 23.9, 23.9, 23.9, 23.9, 23.9]
+
+        self.DD1_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data, time_value=0)
+        self.DD2_1_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data, time_value=0)
+        self.DD3_2_plot.update_data(pressure_value=self.p_data, temperature_value=self.t_data, time_value=0)
+        self.p_data += 1
+        self.t_data -= 1
 
     def setup_plot(self):
         plot_layout = QtWidgets.QHBoxLayout()

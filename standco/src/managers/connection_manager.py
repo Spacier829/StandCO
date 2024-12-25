@@ -26,5 +26,5 @@ class ConnectionManager:
                                  "is_connected": is_connected})
 
     def close(self):
-        for client in self.clients:
-            client.close()
+        for device in self.clients:
+            device["client"].close()

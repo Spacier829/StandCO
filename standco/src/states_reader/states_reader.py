@@ -1,10 +1,7 @@
-import signal
-
 from standco.src.managers.connection_manager import ConnectionManager
 from standco.src.managers.relay_manager import RelayManager
 from standco.src.managers.sensor_manager import SensorManager
 from loggers.data_logger import DataLogger
-from time import sleep
 
 
 class StatesReader:
@@ -29,6 +26,10 @@ class StatesReader:
 
         self.sensors_manager.read_values()
         result_sensors = self.sensors_manager.get_sensor_values()
+        if not self.logger.file_initialized:
+            self.logger.initialize_file(result_relays, result_sensors)
+
+        self.logger.log_data(result_relays, result_sensors)
         return result_relays, result_sensors
 
     def close_util(self):

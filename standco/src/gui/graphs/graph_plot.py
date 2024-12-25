@@ -22,8 +22,8 @@ class GraphPlot(pg.PlotWidget):
 
         self.getPlotItem().showAxis('right')
         self.getPlotItem().getAxis('right').setPen('white')
-        self.getPlotItem().getAxis('right').setLabel('Температура (°C)', color='#1F91DC', **{'font-size': '12pt'})
-        self.getPlotItem().getAxis('left').setLabel('Давление (Па)', color='#FA3232', **{'font-size': '12pt'})
+        self.getPlotItem().getAxis('right').setLabel('Температура, °C', color='#1F91DC', **{'font-size': '12pt'})
+        self.getPlotItem().getAxis('left').setLabel('Давление, Атм', color='#FA3232', **{'font-size': '12pt'})
         self.time_axis.setLabel('Время', color='white', **{'font-size': '10pt'})
 
         self.pressure_curve = self.plot(pen=pg.mkPen('#FA3232', width=2))

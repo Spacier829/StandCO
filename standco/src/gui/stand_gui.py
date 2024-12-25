@@ -49,6 +49,7 @@ class StandGui(QtWidgets.QWidget):
         self.status_bar = QtWidgets.QStatusBar()
         self.status_bar.setSizeGripEnabled(False)
         status_bar_layout.addWidget(self.status_bar)
+        self.status_bar.setEnabled(False)
 
         return status_bar_layout
 
@@ -86,19 +87,24 @@ class StandGui(QtWidgets.QWidget):
 
     def control_panel(self):
         panel = QtWidgets.QHBoxLayout()
-        self.clear_plot_btn = QtWidgets.QPushButton("Остановить")
-        self.update_plot_btn = QtWidgets.QPushButton("Начать чтение")
-        panel.addWidget(self.clear_plot_btn)
-        panel.addWidget(self.update_plot_btn)
-        self.clear_plot_btn.clicked.connect(self.on_clear_btn_clicked)
-        self.update_plot_btn.clicked.connect(self.on_update_btn_clicked)
+        self.clear_btn = QtWidgets.QPushButton("Остановить")
+        self.update_btn = QtWidgets.QPushButton("Начать чтение")
+        panel.addWidget(self.clear_btn)
+        panel.addWidget(self.update_btn)
+        self.clear_btn.clicked.connect(self.on_clear_btn_clicked)
+        self.update_btn.clicked.connect(self.on_update_btn_clicked)
+        self.clear_btn.setEnabled(False)
         return panel
 
     def on_clear_btn_clicked(self):
+        self.clear_btn.setEnabled(False)
+        self.update_btn.setEnabled(True)
         self.timer.stop()
         self.clear()
 
     def on_update_btn_clicked(self):
+        self.update_btn.setEnabled(False)
+        self.clear_btn.setEnabled(True)
         self.timer.timeout.connect(self.update_data)
         self.timer.start(1000)
 
@@ -127,7 +133,7 @@ class StandGui(QtWidgets.QWidget):
 
     def clear(self):
         for sensor in self.sensors_names:
-            plot = getattr(self,sensor)
+            plot = getattr(self, sensor)
             plot.clear_graph()
         for relay in self.relays_names:
             indicator = getattr(self, relay)

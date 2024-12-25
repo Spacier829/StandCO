@@ -6,8 +6,8 @@ from loggers.data_logger import DataLogger
 
 class StatesReader:
     def __init__(self):
-        config_pressure_relays = "../configs/config_pressure_relays_test.json"
-        config_pressure_sensors = "../configs/config_pressure_sensors_test.json"
+        config_pressure_relays = "../configs/relays_config_test.json"
+        config_pressure_sensors = "../configs/sensors_config_test.json"
 
         self.connection_manager_relays = ConnectionManager(config_pressure_relays)
 

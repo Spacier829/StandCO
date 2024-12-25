@@ -32,7 +32,7 @@ class RelayIndicator(QLabel):
         elif self.state is False:
             color = QColor("gray")
         else:
-            color = QColor("white")
+            color = QColor("red")
 
         radius = min(self.width(), self.height() - 25) // 4
         center_x = self.width() // 2

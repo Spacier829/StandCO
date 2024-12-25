@@ -14,7 +14,7 @@ class ConnectionManager:
         except FileNotFoundError:
             raise FileNotFoundError(f"Ошибка открытия файла конфигурации.")
 
-    def connect_to_sensors(self):
+    def connect(self):
         for device in self.config["devices"]:
             client = ModbusTcpClient(host=device["ip"], port=device["port"])
             is_connected = False

@@ -3,17 +3,16 @@ import numpy as np
 
 
 class GraphPlot(pg.PlotWidget):
-    def __init__(self, title):
+    def __init__(self, sensor_name):
         super().__init__()
+        self.sensor_name = sensor_name
 
         self.setBackground('#2C3539')
-        self.setTitle(title, color='white', size='12pt')
+        self.setTitle(sensor_name, color='white', size='12pt')
         self.showGrid(x=True, y=True, alpha=0.5)
 
-        # Создание пользовательской оси X
         self.time_axis = pg.AxisItem(orientation='bottom')
         self.getPlotItem().setAxisItems({'bottom': self.time_axis})
-        self.time_axis.setLabel('Время', color='white', **{'font-size': '10pt'})
 
         self.temperature_axis = pg.ViewBox()
         self.getPlotItem().scene().addItem(self.temperature_axis)
@@ -25,6 +24,7 @@ class GraphPlot(pg.PlotWidget):
         self.getPlotItem().getAxis('right').setPen('white')
         self.getPlotItem().getAxis('right').setLabel('Температура (°C)', color='#1F91DC', **{'font-size': '12pt'})
         self.getPlotItem().getAxis('left').setLabel('Давление (Па)', color='#FA3232', **{'font-size': '12pt'})
+        self.time_axis.setLabel('Время', color='white', **{'font-size': '10pt'})
 
         self.pressure_curve = self.plot(pen=pg.mkPen('#FA3232', width=2))
         self.temperature_curve = pg.PlotCurveItem(pen=pg.mkPen('#1F91DC', width=2))
@@ -32,9 +32,9 @@ class GraphPlot(pg.PlotWidget):
 
         self.update_views()
 
-        self.time_data = []  # Данные времени
-        self.pressure_data = []  # Данные давления
-        self.temperature_data = []  # Данные температуры
+        self.time_data = []
+        self.pressure_data = []
+        self.temperature_data = []
         self.ptr = 0
         self.values_init_counter = 0
 

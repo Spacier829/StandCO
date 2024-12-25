@@ -6,7 +6,7 @@
       "slave": 1,
       "sensors": [
         {
-          "name": "ДД_1.0"
+          "name": "DD_1"
         }
       ]
     },
@@ -16,7 +16,7 @@
       "slave": 1,
       "sensors": [
         {
-          "name": "ДД_1.1"
+          "name": "DD_1.1"
         }
       ]
     }

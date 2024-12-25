@@ -6,7 +6,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_1"
+          "name": "DD_1"
         }
       ]
     },
@@ -16,7 +16,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_1.1"
+          "name": "DD_1.1"
         }
       ]
     },
@@ -26,7 +26,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_1.2"
+          "name": "DD_1.2"
         }
       ]
     },
@@ -36,7 +36,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_1.3"
+          "name": "DD_1.3"
         }
       ]
     },
@@ -46,7 +46,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_2"
+          "name": "DD_2"
         }
       ]
     },
@@ -56,7 +56,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_2.1"
+          "name": "DD_2.1"
         }
       ]
     },
@@ -66,7 +66,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_2.2"
+          "name": "DD_2.2"
         }
       ]
     },
@@ -76,7 +76,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_2.3"
+          "name": "DD_2.3"
         }
       ]
     },
@@ -86,7 +86,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_3"
+          "name": "DD_3"
         }
       ]
     },
@@ -96,7 +96,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_3.1"
+          "name": "DD_3.1"
         }
       ]
     },
@@ -106,7 +106,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_3.2"
+          "name": "DD_3.2"
         }
       ]
     },
@@ -116,7 +116,7 @@
       "slave": 4,
       "sensors": [
         {
-          "name": "ДД_3.3"
+          "name": "DD_3.3"
         }
       ]
     }

@@ -6,35 +6,35 @@
       "slave": 1,
       "sensors": [
         {
-          "name": "РД_1.0",
+          "name": "PD_1",
           "address": 0
         },
         {
-          "name": "РД_1.1",
+          "name": "PD_1.1",
           "address": 1
         },
         {
-          "name": "РД_1.2",
+          "name": "PD_1.2",
           "address": 2
         },
         {
-          "name": "РД_1.3",
+          "name": "PD_1.3",
           "address": 3
         },
         {
-          "name": "РД_2.0",
+          "name": "PD_2",
           "address": 4
         },
         {
-          "name": "РД_2.1",
+          "name": "PD_2.1",
           "address": 5
         },
         {
-          "name": "РД_2.2",
+          "name": "PD_2.2",
           "address": 6
         },
         {
-          "name": "РД_2.3",
+          "name": "PD_2.3",
           "address": 7
         }
       ]
@@ -45,35 +45,35 @@
       "slave": 1,
       "sensors": [
         {
-          "name": "РД_3.0",
+          "name": "PD_3",
           "address": 0
         },
         {
-          "name": "РД_3.1",
+          "name": "PD_3.1",
           "address": 1
         },
         {
-          "name": "РД_3.3",
+          "name": "PD_3.3",
           "address": 2
         },
         {
-          "name": "РД_3.2",
+          "name": "PD_3.2",
           "address": 3
         },
         {
-          "name": "РД_4.0",
+          "name": "PD_4",
           "address": 4
         },
         {
-          "name": "РД_4.1",
+          "name": "PD_4.1",
           "address": 5
         },
         {
-          "name": "РД_5.3",
+          "name": "PD_5.3",
           "address": 6
         },
         {
-          "name": "РД_4.2",
+          "name": "PD_4.2",
           "address": 7
         }
       ]
@@ -84,35 +84,35 @@
       "slave": 1,
       "sensors": [
         {
-          "name": "РД_5.0",
+          "name": "PD_5",
           "address": 0
         },
         {
-          "name": "РД_5.1",
+          "name": "PD_5.1",
           "address": 1
         },
         {
-          "name": "РД_4.3",
+          "name": "PD_4.3",
           "address": 2
         },
         {
-          "name": "РД_5.2",
+          "name": "PD_5.2",
           "address": 3
         },
         {
-          "name": "РД_6.0",
+          "name": "PD_6",
           "address": 4
         },
         {
-          "name": "РД_6.1",
+          "name": "PD_6.1",
           "address": 5
         },
         {
-          "name": "РД_6.3",
+          "name": "PD_6.3",
           "address": 6
         },
         {
-          "name": "РД_6.2",
+          "name": "PD_6.2",
           "address": 7
         }
       ]

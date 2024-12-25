@@ -31,7 +31,7 @@ class RelayManager:
                 else:
                     print(f"Ошибка чтения")
             except Exception as e:
-                print(f"Ошибка при опросе {e}")
+                raise Exception(f"Ошибка при опросе {e}")
 
     def get_relay_states(self):
         return self.relay_states

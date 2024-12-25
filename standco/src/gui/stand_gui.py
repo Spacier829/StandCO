@@ -21,9 +21,10 @@ class StandGui(QtWidgets.QWidget):
         self.setPalette(palette)
         main_layout = QtWidgets.QVBoxLayout()
         main_layout.setContentsMargins(5, 5, 5, 5)
+        # main_layout.setContentsMargins(0, 0, 0, 0)
 
         content_layout = QtWidgets.QVBoxLayout()
-        content_layout.setSpacing(5)
+        content_layout.setSpacing(0)
 
         content_layout.addLayout(
             self.setup_line_layout(["PD_1", "PD_2", "PD_3", "PD_4", "PD_5", "PD_6"],
@@ -119,8 +120,8 @@ class StandGui(QtWidgets.QWidget):
         for value in s_data:
             sensor_name = self.remove_dot(value["name"])
             sensor = getattr(self, sensor_name)
-            pressure = round(value["pressure"], 4)
-            temperature = round(value["temperature"], 4)
+            pressure = round(value["pressure"], 3)
+            temperature = round(value["temperature"], 3)
             sensor.update_data(pressure, temperature, timestamp)
 
     def update_relays(self, r_data):

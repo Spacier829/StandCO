@@ -54,7 +54,7 @@ class GraphPlot(pg.PlotWidget):
         self.temperature_axis.enableAutoRange()
 
     def update_data(self, pressure_value, temperature_value, time_value):
-        if self.values_init_counter < 10:
+        if self.values_init_counter < 5:
             self.pressure_data.append(pressure_value)
             self.temperature_data.append(temperature_value)
             self.time_data.append(time_value)

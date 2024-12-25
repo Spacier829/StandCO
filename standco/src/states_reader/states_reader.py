@@ -31,4 +31,6 @@ class StatesReader:
         result_sensors = self.sensors_manager.get_sensor_values()
         return result_relays, result_sensors
 
-
+    def close_util(self):
+        self.connection_manager_sensors.close()
+        self.connection_manager_relays.close()

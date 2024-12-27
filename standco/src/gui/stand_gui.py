@@ -9,6 +9,8 @@ class StandGui(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.states_reader = StatesReader()
+        self.plot_counter = 0
+        self.plots = []
         self.sensors_names = []
         self.relays_names = []
         self.setup_ui()
@@ -21,26 +23,24 @@ class StandGui(QtWidgets.QWidget):
         self.setPalette(palette)
         main_layout = QtWidgets.QVBoxLayout()
         main_layout.setContentsMargins(5, 5, 5, 5)
-        # main_layout.setContentsMargins(0, 0, 0, 0)
 
         content_layout = QtWidgets.QVBoxLayout()
         content_layout.setSpacing(0)
 
+        content_layout.addLayout(self.setup_plot(["DD_1", "DD_1.1", "DD_1.2", "DD_1.3"]))
+        content_layout.addLayout(self.setup_plot(["DD_2", "DD_2.1", "DD_2.2", "DD_2.3"]))
+        content_layout.addLayout(self.setup_plot(["DD_3", "DD_3.1", "DD_3.2", "DD_3.3"]))
+        content_layout.addLayout(self.setup_relays_indicators(["PD_1", "PD_2", "PD_3", "PD_4", "PD_5", "PD_6"]))
         content_layout.addLayout(
-            self.setup_line_layout(["PD_1", "PD_2", "PD_3", "PD_4", "PD_5", "PD_6"],
-                                   ["DD_1", "DD_2", "DD_3"]))
+            self.setup_relays_indicators(["PD_1.1", "PD_2.1", "PD_3.1", "PD_4.1", "PD_5.1", "PD_6.1"]))
         content_layout.addLayout(
-            self.setup_line_layout(["PD_1.1", "PD_2.1", "PD_3.1", "PD_4.1", "PD_5.1", "PD_6.1"],
-                                   ["DD_1.1", "DD_2.1", "DD_3.1"]))
+            self.setup_relays_indicators(["PD_1.2", "PD_2.2", "PD_3.2", "PD_4.2", "PD_5.2", "PD_6.2"]))
         content_layout.addLayout(
-            self.setup_line_layout(["PD_1.2", "PD_2.2", "PD_3.2", "PD_4.2", "PD_5.2", "PD_6.2"],
-                                   ["DD_1.2", "DD_2.2", "DD_3.2"]))
-        content_layout.addLayout(
-            self.setup_line_layout(["PD_1.3", "PD_2.3", "PD_3.3", "PD_4.3", "PD_5.3", "PD_6.3"],
-                                   ["DD_1.3", "DD_2.3", "DD_3.3"]))
-        content_layout.addLayout(self.control_panel())
+            self.setup_relays_indicators(["PD_1.3", "PD_2.3", "PD_3.3", "PD_4.3", "PD_5.3", "PD_6.3"]))
+
 
         main_layout.addLayout(content_layout)
+        main_layout.addLayout(self.control_panel())
         main_layout.addLayout(self.setup_status_bar())
 
         self.setLayout(main_layout)
@@ -50,28 +50,19 @@ class StandGui(QtWidgets.QWidget):
         self.status_bar = QtWidgets.QStatusBar()
         self.status_bar.setSizeGripEnabled(False)
         status_bar_layout.addWidget(self.status_bar)
-        self.status_bar.setEnabled(False)
+        self.status_bar.setVisible(False)
 
         return status_bar_layout
 
     def setup_relays_indicators(self, relays_labels):
         indicators_layout = QtWidgets.QHBoxLayout()
-        for i in range(3):
+        for i in range(6):
             indicator = RelayIndicator(relays_labels[i])
             var_name = self.remove_dot(relays_labels[i])
             setattr(self, var_name, indicator)
             self.relays_names.append(var_name)
             indicators_layout.addWidget(indicator)
         return indicators_layout
-
-    def setup_plot(self, sensor_name):
-        plot_layout = QtWidgets.QHBoxLayout()
-        plot = GraphPlot(sensor_name)
-        var_name = self.remove_dot(sensor_name)
-        setattr(self, var_name, plot)
-        self.sensors_names.append(var_name)
-        plot_layout.addWidget(plot)
-        return plot_layout
 
     def remove_dot(self, name):
         name = name.replace(".", "_")
@@ -109,21 +100,6 @@ class StandGui(QtWidgets.QWidget):
         self.timer.timeout.connect(self.update_data)
         self.timer.start(1000)
 
-    def update_data(self):
-        timestamp = datetime.now().strftime("%H:%M:%S")
-        r_data, s_data = self.states_reader.read()
-
-        self.update_relays(r_data)
-        self.update_sensors(s_data, timestamp)
-
-    def update_sensors(self, s_data, timestamp):
-        for value in s_data:
-            sensor_name = self.remove_dot(value["name"])
-            sensor = getattr(self, sensor_name)
-            pressure = round(value["pressure"], 3)
-            temperature = round(value["temperature"], 3)
-            sensor.update_data(pressure, temperature, timestamp)
-
     def update_relays(self, r_data):
         for value in r_data:
             relay_name = self.remove_dot(value["name"])
@@ -132,7 +108,30 @@ class StandGui(QtWidgets.QWidget):
                 if relay.state != value["state"]:
                     relay.set_state(value["state"])
 
+    # Под рефакторинг
+    def setup_plot(self, sensors_labels):
+        plot_layout = QtWidgets.QHBoxLayout()
+        self.plot_counter += 1
+        plot = GraphPlot(sensors_labels)
+        setattr(self, f'plot_{self.plot_counter}', plot)
+        self.plots.append(getattr(self, f'plot_{self.plot_counter}'))
+        plot_layout.addWidget(plot)
+        return plot_layout
+
+    def update_data(self):
+        r_data, s_data = self.states_reader.read()
+
+        # self.update_relays(r_data)
+        self.update_sensors(s_data)
+
+    # Под рефакторинг
+    def update_sensors(self, s_data):
+        for plot in self.plots:
+            plot.update_data(s_data)
+
+    # Под рефакторинг
     def clear(self):
+
         for sensor in self.sensors_names:
             plot = getattr(self, sensor)
             plot.clear_graph()

@@ -14,7 +14,6 @@ class StandGui(QtWidgets.QWidget):
         self.relays_names = []
         self.setup_ui()
         self.timer = QtCore.QTimer()
-        self.on_update_btn_clicked()
 
     def setup_ui(self):
         self.setWindowTitle("StandCO")
@@ -130,7 +129,7 @@ class StandGui(QtWidgets.QWidget):
     def update_data(self):
         r_data, s_data = self.states_reader.read()
 
-        # self.update_relays(r_data)
+        self.update_relays(r_data)
         self.update_sensors(s_data)
 
     def update_sensors(self, s_data):

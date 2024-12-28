@@ -5,6 +5,7 @@ import numpy as np
 class GraphPlot(pg.PlotWidget):
     def __init__(self, sensors_labels):
         super().__init__()
+        self.sensors_labels = sensors_labels
 
         self.setBackground('#2C3539')
         self.showGrid(x=True, y=True, alpha=0.5)
@@ -26,10 +27,13 @@ class GraphPlot(pg.PlotWidget):
 
         self.getPlotItem().showAxis('right')
         self.getPlotItem().getAxis('right').setPen('white')
-        self.getPlotItem().getAxis('right').setLabel('Температура, °C', color='#1F91DC', **{'font-size': '12pt'})
-        self.getPlotItem().getAxis('left').setLabel('Давление, Атм', color='#FA3232', **{'font-size': '12pt'})
+        self.getPlotItem().getAxis('right').setLabel('Температура, °C', color='#1F91DC', **{'font-size': '10pt'})
+        self.getPlotItem().getAxis('left').setLabel('Давление, Атм', color='#FA3232', **{'font-size': '10pt'})
 
         colors = ['#FA3232', '#0000FF', '#1F91DC', '#FFFF00']
+        self.legend = pg.LegendItem((20, 10), offset=(40, 5))
+        self.legend.setParentItem(self.graphicsItem())
+        self.legend.setLabelTextColor('white')
         for i in range(len(sensors_labels)):
             pressure_curve = self.plot(pen=pg.mkPen(colors[i], width=2))
             temperature_curve = pg.PlotCurveItem(pen=pg.mkPen(colors[i], width=2))
@@ -41,6 +45,7 @@ class GraphPlot(pg.PlotWidget):
             setattr(self, f'pressure_data_{name}', pressure_data)
             setattr(self, f'temperature_data_{name}', temperature_data)
             plot = getattr(self, f'temperature_curve_{name}')
+            self.legend.addItem(plot, sensors_labels[i])
             self.temperature_axis.addItem(plot)
 
         self.update_views()
@@ -73,12 +78,10 @@ class GraphPlot(pg.PlotWidget):
 
     def clear_graph(self):
         self.pressure_data.fill(0)
-
         self.temperature_data.fill(0)
         self.pressure_curve.clear()
         self.temperature_curve.clear()
 
-    # Добавить штуку для рефакторинга имени графика
     def remove_dot(self, name):
         name = name.replace(".", "_")
         return name
